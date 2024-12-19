@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+long arrayManipulation(int n, int queries[][3], int m) {
+    long *arr = (long*)calloc(n + 2, sizeof(long)); // Initialize difference array
+    
+    // Process each query
+    for (int i = 0; i < m; i++) {
+        int a = queries[i][0];
+        int b = queries[i][1];
+        int k = queries[i][2];
+        
+        arr[a] += k;       // Add k at index 'a'
+        arr[b + 1] -= k;   // Subtract k after index 'b'
+    }
+    
+    // Compute prefix sum and find the maximum value
+    long max = 0, sum = 0;
+    for (int i = 1; i <= n; i++) {
+        sum += arr[i];
+        if (sum > max) {
+            max = sum;
+        }
+    }
+    
+    free(arr);
+    return max;
+}
+
+int main() {
+    int n, m;
+    scanf("%d %d", &n, &m); // n = size of array, m = number of queries
+    
+    int queries[m][3];
+    for (int i = 0; i < m; i++) {
+        scanf("%d %d %d", &queries[i][0], &queries[i][1], &queries[i][2]);
+    }
+    
+    long result = arrayManipulation(n, queries, m);
+    printf("%ld\n", result);
+    
+    return 0;
+}
